@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>宝宝每日绘本 · 300+</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff;--bg2:#f7f5f1;--bg3:#eceae5;
+  --text:#1c1b18;--text2:#5a5850;--text3:#9a9888;
+  --bd:#e4e0d8;--bd2:#ccc8bc;
+  --teal:#0f6e56;--tbg:#e1f5ee;--tt:#085041;
+  --amber:#854f0b;--abg:#faeeda;--at:#633806;
+  --coral:#993c1d;--cbg:#faece7;--ct:#712b13;
+  --purple:#534ab7;--pbg:#eeedfe;--pt:#3c3489;
+  --blue:#185fa5;--bbg:#e6f1fb;--bt:#0c447c;
+  --green:#3b6d11;--gbg:#eaf3de;--gt:#27500a;
+  --r:8px;--rlg:12px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1c1b18;--bg2:#242320;--bg3:#2c2a26;
+  --text:#e8e4dc;--text2:#9a9680;--text3:#5a5850;
+  --bd:#332f28;--bd2:#443e36;
+  --teal:#3dba6e;--tbg:#0a2218;--tt:#70dca0;
+  --amber:#f0a040;--abg:#2a1e08;--at:#facc80;
+  --coral:#e06050;--cbg:#2a1008;--ct:#f09080;
+  --purple:#7f77dd;--pbg:#1a1840;--pt:#afa9ec;
+  --blue:#378add;--bbg:#0c1e38;--bt:#85b7eb;
+  --green:#639922;--gbg:#152008;--gt:#c0dd97;
+}}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh;font-size:14px}
+
+.app{max-width:960px;margin:0 auto;padding:14px}
+
+.topbar{background:var(--bg);border:.5px solid var(--bd);border-radius:var(--rlg);padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{width:44px;height:44px;border-radius:10px;background:var(--tbg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo svg{width:24px;height:24px;stroke:var(--teal);fill:none;stroke-width:1.8}
+.bar-text h1{font-size:18px;font-weight:500;color:var(--text)}
+.bar-text p{font-size:12px;color:var(--text2)}
+.bar-stats{display:flex;gap:16px;margin-left:auto;flex-shrink:0}
+.stat{text-align:center}
+.stat-n{font-size:20px;font-weight:500;color:var(--teal);line-height:1}
+.stat-l{font-size:10px;color:var(--text3);margin-top:2px}
+.bar-date{text-align:right;flex-shrink:0}
+.bar-date .d{font-size:26px;font-weight:500;color:var(--amber);line-height:1}
+.bar-date .w{font-size:11px;color:var(--text3);margin-top:2px}
+
+.player-card{background:var(--bg);border:.5px solid var(--bd);border-radius:var(--rlg);overflow:hidden;margin-bottom:12px}
+.pc-top{padding:14px 18px 10px;display:flex;align-items:flex-start;gap:10px}
+.pill{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;flex-shrink:0;margin-top:2px}
+.pill-t{background:var(--tbg);color:var(--tt)}
+.pill-a{background:var(--abg);color:var(--at)}
+.pill-c{background:var(--cbg);color:var(--ct)}
+.pill-p{background:var(--pbg);color:var(--pt)}
+.pill-b{background:var(--bbg);color:var(--bt)}
+.pill-g{background:var(--gbg);color:var(--gt)}
+.pc-title{font-size:16px;font-weight:500;color:var(--text);flex:1;line-height:1.4}
+.pc-desc{padding:0 18px 12px;font-size:13px;color:var(--text2);line-height:1.6}
+.player-box{position:relative;width:100%;padding-bottom:56.25%;background:#000}
+.player-box iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.pc-ctrl{padding:12px 18px;display:flex;align-items:center;gap:8px;border-top:.5px solid var(--bd);flex-wrap:wrap}
+.btn{padding:7px 14px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;border:.5px solid var(--bd2);background:var(--bg);color:var(--text);display:inline-flex;align-items:center;gap:5px;transition:background .15s;white-space:nowrap}
+.btn:hover{background:var(--bg2)}
+.btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+.btn.prim{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.prim:hover{opacity:.88}
+.btn.done{background:var(--tbg);color:var(--tt);border-color:var(--teal)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.pc-idx{margin-left:auto;font-size:12px;color:var(--text3);flex-shrink:0}
+
+.search-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.search-input{flex:1;min-width:180px;padding:8px 12px;border:.5px solid var(--bd);border-radius:var(--r);background:var(--bg);color:var(--text);font-size:13px;outline:none}
+.search-input:focus{border-color:var(--teal)}
+.search-count{font-size:12px;color:var(--text3);align-self:center;flex-shrink:0}
+
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip{font-size:12px;padding:5px 11px;border-radius:20px;cursor:pointer;border:.5px solid var(--bd);background:var(--bg);color:var(--text2);user-select:none;transition:all .15s;white-space:nowrap}
+.chip.on{border-color:var(--teal);background:var(--tbg);color:var(--tt)}
+
+.book-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-bottom:14px}
+.bk{background:var(--bg);border:.5px solid var(--bd);border-radius:var(--rlg);overflow:hidden;cursor:pointer;transition:border-color .2s}
+.bk:hover{border-color:var(--bd2)}
+.bk.active{border-color:var(--teal);border-width:1.5px}
+.bk.read{opacity:.55}
+.bk-bar{height:5px}
+.bk-bar-t{background:var(--tbg)}
+.bk-bar-a{background:var(--abg)}
+.bk-bar-c{background:var(--cbg)}
+.bk-bar-p{background:var(--pbg)}
+.bk-bar-b{background:var(--bbg)}
+.bk-bar-g{background:var(--gbg)}
+.bk-body{padding:10px 12px}
+.bk-row{display:flex;align-items:flex-start;gap:6px;margin-bottom:5px}
+.bk-title{font-size:13px;font-weight:500;color:var(--text);flex:1;line-height:1.4}
+.bk-check{width:16px;height:16px;border-radius:50%;background:var(--teal);display:none;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.bk-check svg{width:9px;height:9px;stroke:#fff;fill:none;stroke-width:2.5}
+.bk.read .bk-check{display:flex}
+.bk-meta{display:flex;gap:4px;flex-wrap:wrap}
+.bk-age{font-size:10px;padding:2px 6px;border-radius:20px;background:var(--bg3);color:var(--text3)}
+.bk-cat{font-size:10px;padding:2px 6px;border-radius:20px}
+
+.prog-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.prog-card{flex:1;min-width:160px;background:var(--bg);border:.5px solid var(--bd);border-radius:var(--rlg);padding:14px 16px}
+.prog-card h3{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.month-dots{display:flex;flex-wrap:wrap;gap:3px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--bg3);border:.5px solid var(--bd)}
+.dot.done{background:var(--teal)}
+.dot.today{background:var(--amber)}
+
+.add-section{background:var(--bg);border:.5px dashed var(--bd2);border-radius:var(--rlg);padding:16px 18px;margin-bottom:14px}
+.add-section h3{font-size:12px;color:var(--text2);margin-bottom:10px;font-weight:500}
+.add-form{display:flex;gap:8px;flex-wrap:wrap}
+.add-form input,.add-form select{padding:7px 10px;border:.5px solid var(--bd);border-radius:var(--r);background:var(--bg2);color:var(--text);font-size:13px;outline:none}
+.add-form input{flex:1;min-width:140px}
+.add-form input:focus,.add-form select:focus{border-color:var(--teal)}
+
+.notice{font-size:11px;color:var(--text3);background:var(--bg2);border-radius:var(--r);padding:8px 12px;margin-bottom:10px;line-height:1.6}
+.badge-count{background:var(--teal);color:#fff;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500;margin-left:6px}
+
+.sec-title{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;display:flex;align-items:center}
+
+/* ── mobile optimizations ── */
+.btn{min-height:40px}
+.chip{min-height:34px;display:inline-flex;align-items:center}
+@media(max-width:600px){
+  .app{padding:10px}
+  .topbar{padding:12px 14px;gap:10px}
+  .bar-stats{gap:10px}
+  .stat-n{font-size:18px}
+  .bar-date .d{font-size:22px}
+  .bar-text h1{font-size:16px}
+  .pc-top{padding:12px 14px 8px}
+  .pc-ctrl{padding:10px 14px;gap:6px}
+  .btn{padding:9px 12px;font-size:13px}
+  .book-grid{grid-template-columns:1fr 1fr}
+  .bk-title{font-size:12px}
+  .add-form{flex-direction:column}
+  .add-form input,.add-form select{width:100%}
+  .search-row{flex-direction:column}
+  .search-input{min-width:0}
+}
+@media(max-width:380px){
+  .book-grid{grid-template-columns:1fr}
+}
+
+/* ── mobile video panel ── */
+.mobile-open{display:none;flex-direction:column;align-items:center;justify-content:center;background:#000;padding:32px 20px;gap:14px;text-align:center}
+.mobile-open p{color:#aaa;font-size:13px;line-height:1.7}
+.btn-app{background:#00a1d6;color:#fff;border:none;border-radius:10px;padding:14px 28px;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;min-width:200px;justify-content:center}
+.btn-web{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:12px 24px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;min-width:200px;justify-content:center}
+.btn-app svg,.btn-web svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ── hosting notice ── */
+.host-notice{background:var(--abg);border:.5px solid var(--at);border-radius:var(--rlg);padding:14px 16px;margin-bottom:12px;font-size:13px;line-height:1.7;color:var(--text2)}
+.host-notice strong{color:var(--at)}
+.host-notice code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-family:monospace;font-size:12px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="topbar">
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+  </div>
+  <div class="bar-text">
+    <h1>宝宝每日绘本</h1>
+    <p id="subLine">加载中...</p>
+  </div>
+  <div class="bar-stats">
+    <div class="stat"><div class="stat-n" id="sStreak">0</div><div class="stat-l">连续天</div></div>
+    <div class="stat"><div class="stat-n" id="sTotal" style="color:var(--purple)">0</div><div class="stat-l">累计读</div></div>
+    <div class="stat"><div class="stat-n" id="sToday" style="color:var(--coral)">0</div><div class="stat-l">今日读</div></div>
+  </div>
+  <div class="bar-date"><div class="d" id="dayNum"></div><div class="w" id="weekStr"></div></div>
+</div>
+
+<div class="sec-title" style="margin-bottom:8px">
+  今日绘本
+</div>
+<div class="player-card" id="playerCard">
+  <div class="pc-top">
+    <span class="pill pill-t" id="nowChannel">频道</span>
+    <span class="pill bk-age" id="nowAge" style="margin-top:2px">年龄</span>
+    <span class="pc-title" id="nowTitle">正在加载...</span>
+  </div>
+  <p class="pc-desc" id="nowDesc"></p>
+  <!-- 桌面端：iframe嵌入 -->
+  <div class="player-box" id="desktopPlayer">
+    <iframe id="bili" src="" allow="accelerometer;autoplay;clipboard-write;encrypted-media;picture-in-picture" allowfullscreen></iframe>
+  </div>
+  <!-- 手机端：跳转到B站 -->
+  <div class="mobile-open" id="mobilePlayer">
+    <p id="mobileTitle" style="color:#fff;font-size:15px;font-weight:500"></p>
+    <p>手机端 iframe 受浏览器限制无法直接播放<br>点击下方按钮在 B站 中观看</p>
+    <button class="btn-app" onclick="openApp()">
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      在 B站 APP 中打开
+    </button>
+    <button class="btn-web" onclick="openWeb()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      在浏览器中打开
+    </button>
+    <p style="font-size:11px;color:#666">看完回来点"标记已读"打卡</p>
+  </div>
+  <div class="pc-ctrl">
+    <button class="btn" onclick="go(-1)">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>上一本
+    </button>
+    <button class="btn prim" id="doneBtn" onclick="markRead()">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>标记已读
+    </button>
+    <button class="btn" onclick="go(1)">
+      下一本<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <button class="btn sm" onclick="openWeb()" style="margin-left:4px">
+      <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>B站打开
+    </button>
+    <span class="pc-idx" id="pcIdx"></span>
+  </div>
+</div>
+
+<div class="host-notice" id="hostNotice">
+  <strong>手机使用说明</strong><br>
+  手机浏览器直接打开本地 .html 文件后，视频需要登录 B站 才能播放。<br>
+  <strong>推荐方案</strong>：将此文件上传到 <strong>GitHub Pages</strong>（免费），获得一个网址，手机浏览器直接访问，或添加到主屏幕当 App 用。<br>
+  <strong>临时方案</strong>：电脑和手机连同一个 WiFi，电脑开本地服务器（在文件目录运行 <code>python -m http.server 8080</code>），手机访问 <code>电脑IP:8080</code>。
+</div>
+
+<div class="sec-title">
+  全部绘本
+  <span class="badge-count" id="totalBadge">0</span>
+</div>
+
+<div class="search-row">
+  <input class="search-input" id="searchBox" placeholder="搜索绘本名称..." oninput="onSearch()">
+  <select id="catFilter" style="padding:8px 10px;border:.5px solid var(--bd);border-radius:var(--r);background:var(--bg);color:var(--text);font-size:13px;outline:none" onchange="onSearch()">
+    <option value="">全部分类</option>
+    <option value="小猪佩奇">小猪佩奇系列</option>
+    <option value="经典绘本">经典绘本</option>
+    <option value="英文绘本">英文绘本</option>
+    <option value="成长情感">成长情感</option>
+    <option value="自然科普">自然科普</option>
+    <option value="生活习惯">生活习惯</option>
+    <option value="想象创意">想象创意</option>
+  </select>
+  <span class="search-count" id="searchCount"></span>
+</div>
+
+<div class="filter-row" id="filterRow"></div>
+
+<div class="book-grid" id="bookGrid"></div>
+
+<div class="prog-row">
+  <div class="prog-card" style="flex:2">
+    <h3>本月打卡进度</h3>
+    <div class="month-dots" id="monthDots"></div>
+    <p style="font-size:11px;color:var(--text3);margin-top:8px" id="progText"></p>
+  </div>
+  <div class="prog-card">
+    <h3>数据说明</h3>
+    <p style="font-size:12px;color:var(--text2);line-height:1.7">
+      绘本数量：<b id="totalCount" style="color:var(--teal)">0</b> 本<br>
+      数据来源：哔哩哔哩<br>
+      分P合集采用 page= 参数<br>
+      数据存储在本地浏览器
+    </p>
+  </div>
+</div>
+
+<div class="add-section">
+  <h3>添加自定义绘本（粘贴B站 BV 号）</h3>
+  <div class="add-form">
+    <input id="aBv" placeholder="BV号，如 BV1Jg411E7za">
+    <input id="aPage" placeholder="分P页码（默认1）" style="max-width:160px">
+    <input id="aTitle" placeholder="绘本名称">
+    <select id="aCh">
+      <option value="gezijian">格子酱讲绘本</option>
+      <option value="zhuzhujiao">朱朱老师绘本屋</option>
+      <option value="xiguagege">西瓜哥哥讲绘本</option>
+      <option value="nangua">南瓜妈妈讲绘本</option>
+      <option value="other">其他频道</option>
+    </select>
+    <select id="aAge">
+      <option value="0-2">0-2岁</option>
+      <option value="2-4">2-4岁</option>
+      <option value="4-6">4-6岁</option>
+      <option value="0-6">通用</option>
+    </select>
+    <select id="aCat">
+      <option value="小猪佩奇">小猪佩奇</option>
+      <option value="经典绘本">经典绘本</option>
+      <option value="英文绘本">英文绘本</option>
+      <option value="成长情感">成长情感</option>
+      <option value="生活习惯">生活习惯</option>
+      <option value="自然科普">自然科普</option>
+      <option value="想象创意">想象创意</option>
+    </select>
+    <button class="btn prim" onclick="addCustom()">添加</button>
+  </div>
+</div>
+
+</div>
+<script>
+const STORE = 'babyBooks_v3';
+const READ_K = 'babyRead_v3';
+const STK_K = 'babyStreak_v3';
+
+/* ─── CHANNEL CONFIG ─── */
+const CH = {
+  gezijian: {name:'格子酱讲绘本',   cls:'pill-t',  bar:'bk-bar-t'},
+  zhuzhujiao:{name:'朱朱老师绘本屋', cls:'pill-a',  bar:'bk-bar-a'},
+  xiguagege:{name:'西瓜哥哥讲绘本', cls:'pill-c',  bar:'bk-bar-c'},
+  nangua:   {name:'南瓜妈妈讲绘本', cls:'pill-p',  bar:'bk-bar-p'},
+  zhiqiao:  {name:'稚桥教育',        cls:'pill-b',  bar:'bk-bar-b'},
+  readforkids:{name:'亲子阅读ReadForKids',cls:'pill-g',bar:'bk-bar-g'},
+  other:    {name:'精选频道',        cls:'pill-a',  bar:'bk-bar-a'},
+};
+
+/* ─── BOOK DATABASE ─── */
+function peppa(p,title){return{bv:'BV1Jg411E7za',page:p,title:`小猪佩奇《${title}》`,ch:'gezijian',age:'2-4',cat:'小猪佩奇',desc:`小猪佩奇经典故事绘本：${title}，画风温馨，语言简单，适合亲子共读。`};}
+function classic100(p,title){return{bv:'BV13J411e7cX',page:p,title,ch:'other',age:'2-6',cat:'经典绘本',desc:`经典绘本故事合集第${p}集，精彩不容错过。`};}
+function eng100(p,title){return{bv:'BV1hC4y187W9',page:p,title,ch:'other',age:'2-6',cat:'英文绘本',desc:`英文绘本有声故事第${p}集，帮助宝宝接触英语语言环境。`};}
+function world(p,title){return{bv:'BV12r4y1B7v2',page:p,title,ch:'other',age:'2-6',cat:'经典绘本',desc:`世界经典绘本动画第${p}集：${title}，原汁原味的视听体验。`};}
+
+const PEPPA_TITLES=['露营去','睡觉时间到了','乔治的气球','土豆先生来小镇了','佩奇的新邻居','乔治感冒了','乔治的新恐龙','新鞋子','去游泳','踢足球','牙齿仙子','森林小路','第一次在朋友家过夜','乔治的生日','佩奇生病了','猪妈妈的生日','月球之旅','去划船','话匣子','校车旅行','乔治不高兴','佩奇去度假','滑板车','猪爸爸的办公室','玩泥坑','买鱼','穿睡衣的朋友','赛车游戏','烤蛋糕','去博物馆','野外露营','邮递员先生','故事时间','嘉年华','海边','雪人爸爸','停车场','猪爷爷的火车','猪奶奶的花园','小船','猪爷爷的旧衬衫','找眼镜','邻居家的孩子','爷爷的旧车','宠物日'];
+
+const CLASSIC100_TITLES=['斯托里·贝利·宝藏1','斯托里·贝利·宝藏2','宝宝的第一本书','阿力的小妹妹','不要再笑了·亚瑟','失去的熊','彼得的椅子','乔纳斯的书','害怕上学的孩子','好心眼儿巨人','魔法床垫','小老鼠和大书','下雪了','动物园里有什么','三只熊','太阳找到了','森林里的秘密','大火车小火车','七彩蜗牛','会飞的小猫','翻转的大象','晚安月亮','野兽国','彼得兔的故事','橡树上的小屋','神奇校车人体','蝴蝶的生命','萤火虫小屋','春天的礼物','吃书的小怪兽','颜色魔法','形状朋友们','数字王国','字母的秘密','音乐的力量','大海的故事','山林探险','农场的一天','城市的声音','夜晚的星星','甜蜜的梦','魔法口袋','彩色的风','奔跑吧小马','骑士的故事','公主的花园','龙和小骑士','海底世界','丛林冒险','太空旅行','神奇树屋1','神奇树屋2','小熊维尼','小红帽新版','三只小猪','灰姑娘','睡美人','丑小鸭','白雪公主','拇指姑娘','杰克的豆茎','美女与野兽','海的女儿','阿拉丁神灯','阿里巴巴','匹诺曹','彼得·潘','绿野仙踪节选','爱丽丝梦游仙境','柳林风声','秘密花园节选','小王子节选','夏洛的网节选','鼹鼠的故事','青蛙和蟾蜍','雪孩子','小鸡快跑','大象和蜘蛛','彩虹鱼故事','最后一只恐龙','时间机器宝贝版','魔法师的帽子','星期三的战争','勇敢的小裁缝','聪明的乌鸦','龟兔赛跑新编','狐狸的狡计','狼来了新版','三兄弟的农场','两只小鸟','大树和小孩','石头汤','慷慨的苹果树','星期一早上','调皮的猴子','蚊子和公牛','青蛙王子','花仙子'];
+
+const ENG100_TITLES=['A Day at Work with Dad','A Valentine For Tommy','Alexander and the Terrible Day','Arthur\'s Thanksgiving','Arthur\'s Valentine','Barbar the Elephant','Big Dog Little Dog','Boy Who Cried Wolf','Caps For Sale','Carrot Seed','Chicka Chicka Boom Boom','Click Clack Moo','Cloudy With Meatballs','Corduroy','Curious George','Danny and the Dinosaur','Diary of a Worm','Dinosaur Days','Doctor De Soto','Dogs on the Go','Dragons Love Tacos','Duck on a Bike','Each Peach Pear Plum','Elephant and Piggie','Ferdinand the Bull','Frog and Toad Together','George and Martha','Gingerbread Man','Goodnight Gorilla','Green Eggs and Ham','Harry the Dirty Dog','Horton Hears a Who','How Do Dinosaurs Say Good Night','How I Became a Pirate','If You Give a Mouse a Cookie','Ira Sleeps Over','Island of the Blue Dolphins','Jack and Jill','Jamberry','Julius the Baby','Just Me and My Dad','Knuffle Bunny','Lilly\'s Purple Plastic Purse','Little Bear','Little Blue and Little Yellow','Lon Po Po','Lyle Crocodile','Make Way for Ducklings','Mike Mulligan Steam Shovel','Miss Bindergarten','Mr. Brown Can Moo','Nate the Great','No David','Officer Buckle and Gloria','Old MacDonald','Owl at Home','Pancakes Pancakes','Panda Bear What Do You See','Paper Bag Princess','Patchwork Quilt','Pigeon Has to Go to School','Possum Magic','Rainbow Fish','Rosie\'s Walk','Sam and the Firefly','Sadie and the Snowman','Sheep in a Jeep','Skeleton Hiccups','Spot the Dog','Stanley','Stellaluna','Stone Soup','Strega Nona','Swimmy','The Boxcar Children','The Giant Jam Sandwich','The Great Kapok Tree','The Mitten','The Relatives Came','The Snowy Day','The Story of Ferdinand','The Very Busy Spider','The Very Lonely Firefly','The Very Quiet Cricket','There Was an Old Lady','Timothy Goes to School','Tikki Tikki Tembo','Trouble with Trolls','Tuesday','Ugh Blerp Blorp','Umbrella','Under the Lemon Moon','Very Last First Time','Wemberly Worried','What Do You Do with a Tail Like This','Where the Wild Things Are','Whistle for Willie','Why Mosquitoes Buzz','William\'s Doll','Wingwalker','Wolves'];
+
+const WORLD_TITLES=['棕熊棕熊你看到了什么','好饿的毛毛虫经典版','晚安月亮经典版','小蓝和小黄','不·大卫经典版','大卫上学去','逃家小兔','猜猜我有多爱你','我的情绪小怪兽','谁动了我的奶酪儿童版','鳄鱼怕怕牙医怕怕','奥利佛是只猫','菲菲生气了','月亮你好','我爸爸','我妈妈','了不起的狐狸爸爸节选','夏天','冬天','花婆婆','活了一百万次的猫','宫西达也·你看起来好像很好吃','宫西达也·永远永远爱你','宫西达也·你真好','宫西达也·我是霸王龙','宫西达也·对不起了','小熊宝宝图画书·幸福','小熊宝宝·洗澡','小熊宝宝·一起玩','小熊宝宝·吃饭','苏斯博士·戴高帽的猫','苏斯博士·绿鸡蛋和火腿','苏斯博士·霍顿','彼得兔与朋友们1','彼得兔与朋友们2','玛德琳娜的故事','长袜子皮皮节选','小不点和大巨人','奇先生妙小姐1','奇先生妙小姐2','小房子','大白汽船','小岛','雨中的鸟','小黑鱼','阿罗有枝彩色笔','阿罗去兜风','石头书','小猫咪什么时候回来','勇气','感恩节的礼物','生气汤','爱上幼儿园','上幼儿园了','小阿力的大学校','朱家故事','我有友情要出租','七只瞎老鼠','旗鱼爷爷','老鼠娶新娘','子儿吐吐','小鸟的歌','大猫手套','骑士与恶龙','好好刷牙','洗个痛快澡','时钟书','颜色书','形状书','计数书','和甘伯伯去游河','和甘伯伯去兜风','大松鼠','橡树上的家','地图（世界版）','地图（中国版）','动物医生','超级飞侠图书版','大象和小鸟','毛毛虫的蜕变','树叶落下来的时候','秋叶','冬雪','春芽','夏花','我是一片叶子','彩虹色的花完整版','美丽的星期三','蜡笔小黑','百个孩子一个世界','生命的故事','身体的秘密'];
+
+/* ─── BUILD BOOK LIST ─── */
+const BOOKS_DEFAULT = [
+  // 格子酱 单集（确认BV）
+  {bv:'BV1uY411x7tg',page:1,title:'小猪佩奇《运动会》',ch:'gezijian',age:'0-4',cat:'小猪佩奇',desc:'佩奇和朋友们的运动会，充满欢笑和活力，培养宝宝积极参与的精神。'},
+  {bv:'BV1dM411z79G',page:1,title:'小猪佩奇《下雪了》',ch:'gezijian',age:'0-4',cat:'小猪佩奇',desc:'第一场雪降临，佩奇和乔治兴奋地堆雪人、打雪仗，感受冬天的快乐。'},
+  {bv:'BV1R14y1c74K',page:1,title:'小猪佩奇《佩奇洗衣服》',ch:'gezijian',age:'0-4',cat:'小猪佩奇',desc:'佩奇帮猪妈妈洗衣服，不小心把白衬衫染粉红色，温暖的家庭故事。'},
+  {bv:'BV15G4y1L7HA',page:1,title:'小猪佩奇《圣诞愿望》',ch:'gezijian',age:'0-4',cat:'小猪佩奇',desc:'圣诞节到了，佩奇许下美好的愿望，充满节日温馨气氛。'},
+
+  // 格子酱 佩奇合集 45集（BV1Jg411E7za 是合集入口）
+  ...PEPPA_TITLES.map((t,i)=>peppa(i+1,t)),
+
+  // 经典绘本100集合集
+  ...CLASSIC100_TITLES.map((t,i)=>classic100(i+1,t)),
+
+  // 英文绘本100集合集
+  ...ENG100_TITLES.map((t,i)=>eng100(i+1,t)),
+
+  // 世界经典绘本（前100集）
+  ...WORLD_TITLES.map((t,i)=>world(i+1,t)),
+
+  // 朱朱老师绘本屋（确认BV）
+  {bv:'BV1824y1n7Ks',page:1,title:'《我的幸运一天》',ch:'zhuzhujiao',age:'2-5',cat:'成长情感',desc:'小肥猪误入狐狸家，凭借机智转危为安。教孩子遇事不慌，积极想办法。'},
+  {bv:'BV1eP4y1e7MM',page:1,title:'《彩虹色的花》',ch:'zhuzhujiao',age:'0-4',cat:'成长情感',desc:'一朵彩虹色的花把花瓣送给需要帮助的小动物，治愈系温馨故事，感受分享与爱。'},
+  {bv:'BV1AW4y1G7qf',page:1,title:'《小红和小黄》宫西达也',ch:'zhuzhujiao',age:'2-6',cat:'成长情感',desc:'慢性子的小黄和急性子的小红，一路欣赏风景，学会欣赏生活中的美好。'},
+
+  // 其他确认BV
+  {bv:'BV1dL411J7kj',page:1,title:'《蚯蚓的日记》',ch:'other',age:'3-6',cat:'自然科普',desc:'用日记形式讲述蚯蚓的有趣生活，幽默科普，让孩子爱上大自然。'},
+  {bv:'BV1v4411S7Ze',page:1,title:'《好饿的毛毛虫》稚桥教育版',ch:'zhiqiao',age:'0-3',cat:'自然科普',desc:'艾瑞卡尔经典绘本，毛毛虫的成长旅程，学习数字、食物和生命科学。'},
+  {bv:'BV16P411T7En',page:1,title:'《彩虹色的花》崽崽版',ch:'other',age:'0-4',cat:'成长情感',desc:'绘本大师麦克·格雷涅茨作品，彩虹色的花分享花瓣给小动物们，讲述奉献与希望。'},
+  {bv:'BV154411y7rd',page:1,title:'《好饿的毛毛虫》小恐龙版',ch:'other',age:'0-3',cat:'自然科普',desc:'经典版本，边看边学星期几和数字，宝宝超喜欢的有声绘本。'},
+  {bv:'BV1hw4m1Y76j',page:1,title:'《章鱼先生卖雨伞》',ch:'other',age:'2-5',cat:'想象创意',desc:'章鱼先生用八只手臂卖雨伞，充满想象力的创意故事，培养孩子发散思维。'},
+  {bv:'BV1nw411S7UW',page:1,title:'《奇趣美味三明治》',ch:'readforkids',age:'2-5',cat:'想象创意',desc:'愿意分享的孩子收获成倍的快乐，美味三明治里的分享主题故事。'},
+  {bv:'BV1oq4y1M7d7',page:1,title:'有声绘本《我准备好上小学了》',ch:'other',age:'4-6',cat:'成长情感',desc:'帮助孩子消除上学前的紧张情绪，以温暖的方式迎接人生新阶段。'},
+  {bv:'BV1YL411n7oq',page:1,title:'100部经典绘本动画第1集',ch:'other',age:'2-6',cat:'英文绘本',desc:'精选百部世界经典绘本动画，高质量英文视听内容，适合英语启蒙。'},
+];
+
+/* ─── CUSTOM BOOKS from localStorage ─── */
+let customBooks = JSON.parse(localStorage.getItem(STORE)||'[]');
+function allBooks(){return [...BOOKS_DEFAULT, ...customBooks];}
+
+/* ─── READ / STREAK ─── */
+let readSet = new Set(JSON.parse(localStorage.getItem(READ_K)||'[]'));
+let streak = JSON.parse(localStorage.getItem(STK_K)||'{"count":0,"lastDate":""}');
+function saveAll(){
+  localStorage.setItem(STORE,JSON.stringify(customBooks));
+  localStorage.setItem(READ_K,JSON.stringify([...readSet]));
+  localStorage.setItem(STK_K,JSON.stringify(streak));
+}
+function todayKey(){const d=new Date();return`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;}
+function readKey(b){return`${todayKey()}_${b.bv}_${b.page||1}`;}
+function isRead(b){return readSet.has(readKey(b));}
+function todayCount(){return [...readSet].filter(k=>k.startsWith(todayKey()+'_')).length;}
+function totalCount(){return readSet.size;}
+function updateStreak(){
+  const today=todayKey();
+  const yd=new Date();yd.setDate(yd.getDate()-1);
+  const yest=`${yd.getFullYear()}-${yd.getMonth()+1}-${yd.getDate()}`;
+  if(streak.lastDate!==today){
+    if(streak.lastDate===yest) streak.count++;
+    else if(streak.lastDate!==today) streak.count=1;
+    streak.lastDate=today;
+    saveAll();
+  }
+}
+
+/* ─── PLAYER STATE ─── */
+let curIdx=0;
+let filteredBooks=[];
+let activeFilter='all';
+
+function getDailyIdx(){
+  const d=new Date();
+  const seed=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+  const ab=allBooks();
+  return seed%ab.length;
+}
+
+function renderPlayer(idx){
+  const ab=allBooks();
+  if(!ab.length) return;
+  curIdx=idx;
+  const b=ab[idx];
+  const ch=CH[b.ch]||CH.other;
+  document.getElementById('nowChannel').textContent=ch.name;
+  document.getElementById('nowChannel').className='pill '+ch.cls;
+  document.getElementById('nowAge').textContent=b.age;
+  document.getElementById('nowTitle').textContent=b.title;
+  document.getElementById('nowDesc').textContent=b.desc||'';
+  const p=b.page||1;
+  document.getElementById('mobileTitle').textContent=b.title;
+  if(!isMobile){
+    document.getElementById('bili').src=`https://player.bilibili.com/player.html?bvid=${b.bv}&page=${p}&autoplay=0&high_quality=1&danmaku=0`;
+  }
+  const btn=document.getElementById('doneBtn');
+  if(isRead(b)){btn.className='btn done';btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>已读完';}
+  else{btn.className='btn prim';btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>标记已读';}
+  document.getElementById('pcIdx').textContent=`${idx+1} / ${ab.length}`;
+  document.querySelectorAll('.bk').forEach(el=>el.classList.toggle('active',parseInt(el.dataset.idx)===idx));
+}
+
+/* ── mobile detection ── */
+const isMobile=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+function setupPlayerMode(){
+  const dp=document.getElementById('desktopPlayer');
+  const mp=document.getElementById('mobilePlayer');
+  if(isMobile){
+    dp.style.display='none';
+    mp.style.display='flex';
+  } else {
+    dp.style.display='block';
+    mp.style.display='none';
+  }
+}
+
+function currentBiliUrl(){
+  const ab=allBooks();
+  const b=ab[curIdx];
+  const p=b.page||1;
+  return {bv:b.bv, p, web:`https://www.bilibili.com/video/${b.bv}/?p=${p}`, app:`bilibili://video/${b.bv}?p=${p}`, title:b.title};
+}
+
+function openApp(){
+  const u=currentBiliUrl();
+  // Try app deep link first, fallback to web after 1.5s
+  const t=setTimeout(()=>window.open(u.web,'_blank'),1500);
+  window.location.href=u.app;
+}
+
+function openWeb(){
+  const u=currentBiliUrl();
+  window.open(u.web,'_blank');
+}
+
+// keep backward compat
+function openBili(){ openWeb(); }
+
+function markRead(){
+  const ab=allBooks();
+  const b=ab[curIdx];
+  readSet.add(readKey(b));
+  updateStreak();
+  saveAll();
+  renderPlayer(curIdx);
+  renderGrid(filteredBooks);
+  renderProgress();
+  updateStats();
+}
+
+function go(d){
+  const ab=allBooks();
+  const ni=(curIdx+d+ab.length)%ab.length;
+  renderPlayer(ni);
+  document.getElementById('playerCard').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ─── HEADER ─── */
+function initHeader(){
+  const n=new Date();
+  document.getElementById('dayNum').textContent=n.getDate();
+  document.getElementById('weekStr').textContent='星期'+['日','一','二','三','四','五','六'][n.getDay()];
+  const ms=['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+  document.getElementById('subLine').textContent=ms[n.getMonth()]+' · 宝宝每日绘本 300+';
+}
+
+function updateStats(){
+  document.getElementById('sStreak').textContent=streak.count;
+  document.getElementById('sTotal').textContent=totalCount();
+  document.getElementById('sToday').textContent=todayCount();
+}
+
+/* ─── FILTERS ─── */
+function initFilters(){
+  const row=document.getElementById('filterRow');
+  const tags=[{k:'all',l:'全部'},{k:'小猪佩奇',l:'小猪佩奇'},{k:'经典绘本',l:'经典绘本'},{k:'英文绘本',l:'英文绘本'},{k:'成长情感',l:'成长情感'},{k:'自然科普',l:'自然科普'},{k:'生活习惯',l:'生活习惯'},{k:'想象创意',l:'想象创意'},{k:'gezijian',l:'格子酱'},{k:'zhuzhujiao',l:'朱朱老师'},{k:'read',l:'已读'},{k:'unread',l:'未读'}];
+  row.innerHTML='';
+  tags.forEach(t=>{
+    const c=document.createElement('div');
+    c.className='chip'+(activeFilter===t.k?' on':'');
+    c.textContent=t.l;
+    c.onclick=()=>{activeFilter=t.k;initFilters();applyFilter();};
+    row.appendChild(c);
+  });
+}
+
+function applyFilter(){
+  const q=document.getElementById('searchBox').value.toLowerCase().trim();
+  const cat=document.getElementById('catFilter').value;
+  const ab=allBooks();
+  filteredBooks=ab.filter((b,i)=>{
+    if(q&&!b.title.toLowerCase().includes(q)) return false;
+    if(cat&&b.cat!==cat) return false;
+    if(activeFilter==='all') return true;
+    if(activeFilter==='read') return isRead(b);
+    if(activeFilter==='unread') return !isRead(b);
+    if(['小猪佩奇','经典绘本','英文绘本','成长情感','自然科普','生活习惯','想象创意'].includes(activeFilter)) return b.cat===activeFilter;
+    return b.ch===activeFilter;
+  });
+  filteredBooks=filteredBooks.map((b,fi)=>({...b,_origIdx:ab.indexOf(b)}));
+  document.getElementById('searchCount').textContent=`${filteredBooks.length} 本`;
+  document.getElementById('bookGrid').dataset.page='1';
+  renderGrid(filteredBooks);
+}
+
+function onSearch(){applyFilter();}
+
+/* ─── GRID ─── */
+function renderGrid(books){
+  const grid=document.getElementById('bookGrid');
+  grid.innerHTML='';
+  const PAGE_SIZE=60;
+  let page=parseInt(grid.dataset.page||'1');
+  grid.dataset.page=page;
+  const end=page*PAGE_SIZE;
+  books.slice(0,end).forEach((b,fi)=>{
+    const oi=b._origIdx!==undefined?b._origIdx:fi;
+    const ch=CH[b.ch]||CH.other;
+    const read=isRead(b);
+    const div=document.createElement('div');
+    div.className='bk'+(oi===curIdx?' active':'')+(read?' read':'');
+    div.dataset.idx=oi;
+    const catStyle=getCatStyle(b.cat);
+    div.innerHTML=`<div class="bk-bar ${ch.bar}"></div>
+      <div class="bk-body">
+        <div class="bk-row">
+          <span class="bk-title">${b.title}</span>
+          <span class="bk-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        </div>
+        <div class="bk-meta">
+          <span class="bk-cat" style="${catStyle}">${b.cat}</span>
+          <span class="bk-age">${b.age}</span>
+        </div>
+      </div>`;
+    div.onclick=()=>{renderPlayer(oi);document.getElementById('playerCard').scrollIntoView({behavior:'smooth',block:'start'});};
+    grid.appendChild(div);
+  });
+  if(end<books.length){
+    const btn=document.createElement('button');
+    btn.className='btn';
+    btn.style='grid-column:1/-1;justify-content:center;width:100%;padding:10px;margin-top:4px';
+    btn.innerHTML='加载更多（已显示 '+end+'/'+books.length+'，点击继续）';
+    btn.onclick=()=>{grid.dataset.page=page+1;renderGrid(filteredBooks);};
+    grid.appendChild(btn);
+  } else if(books.length>PAGE_SIZE){
+    const info=document.createElement('div');
+    info.style='grid-column:1/-1;text-align:center;font-size:12px;color:var(--text3);padding:8px 0';
+    info.textContent='全部 '+books.length+' 本已显示完毕';
+    grid.appendChild(info);
+  }
+}
+
+function getCatStyle(cat){
+  const map={'小猪佩奇':'background:var(--tbg);color:var(--tt)','经典绘本':'background:var(--abg);color:var(--at)','英文绘本':'background:var(--bbg);color:var(--bt)','成长情感':'background:var(--cbg);color:var(--ct)','自然科普':'background:var(--gbg);color:var(--gt)','生活习惯':'background:var(--pbg);color:var(--pt)','想象创意':'background:var(--pbg);color:var(--pt)'};
+  return map[cat]||'background:var(--bg3);color:var(--text3)';
+}
+
+/* ─── PROGRESS ─── */
+function renderProgress(){
+  const d=new Date();
+  const dim=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+  const today=d.getDate();
+  const dots=document.getElementById('monthDots');
+  dots.innerHTML='';
+  let readDays=0;
+  for(let i=1;i<=dim;i++){
+    const ds=`${d.getFullYear()}-${d.getMonth()+1}-${i}`;
+    const hasRead=[...readSet].some(k=>k.startsWith(ds+'_'));
+    if(hasRead) readDays++;
+    const dot=document.createElement('div');
+    dot.className='dot'+(hasRead?' done':'')+(i===today?' today':'');
+    dots.appendChild(dot);
+  }
+  document.getElementById('progText').textContent=`本月已打卡 ${readDays} 天 · 绿=已读 橙=今天`;
+}
+
+/* ─── ADD CUSTOM ─── */
+function addCustom(){
+  const bv=document.getElementById('aBv').value.trim();
+  const pg=parseInt(document.getElementById('aPage').value)||1;
+  const title=document.getElementById('aTitle').value.trim();
+  const ch=document.getElementById('aCh').value;
+  const age=document.getElementById('aAge').value;
+  const cat=document.getElementById('aCat').value;
+  if(!bv||!title){alert('请填写BV号和名称');return;}
+  if(!bv.startsWith('BV')){alert('BV号需以"BV"开头');return;}
+  customBooks.push({bv,page:pg,title,ch,age,cat,desc:''});
+  saveAll();
+  document.getElementById('aBv').value='';
+  document.getElementById('aPage').value='';
+  document.getElementById('aTitle').value='';
+  document.getElementById('totalBadge').textContent=allBooks().length;
+  document.getElementById('totalCount').textContent=allBooks().length;
+  applyFilter();
+}
+
+/* ─── INIT ─── */
+function init(){
+  initHeader();
+  updateStreak();
+  updateStats();
+  document.getElementById('totalBadge').textContent=allBooks().length;
+  document.getElementById('totalCount').textContent=allBooks().length;
+  initFilters();
+  filteredBooks=allBooks().map((b,i)=>({...b,_origIdx:i}));
+  renderGrid(filteredBooks);
+  renderProgress();
+  setupPlayerMode();
+  const di=getDailyIdx();
+  renderPlayer(di);
+}
+init();
+</script>
+</body>
+</html>
